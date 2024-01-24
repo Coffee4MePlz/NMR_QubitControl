@@ -1,0 +1,22 @@
+clc
+clear all;
+
+spectropar;
+trifluor;
+
+
+pulso{1} = decompulse({{'isech200.RF'}},'F1180',0.3e-3,1,180,{{'n'}});
+pulso{2} = decompulse({{'isech200.RF'}},'F2180',0.3e-3,2,180,{{'n'}});
+pulso{3} = decompulse({{'isech200.RF'}},'F3180',0.2e-3,3,180,{{'n'}});
+pulso{4} = decompulse({{'isech200.RF'}},'F190',0.3e-3,1,90,{{'n'}});
+pulso{5} = decompulse({{'isech200.RF'}},'F290',0.3e-3,2,90,{{'n'}});
+pulso{6} = decompulse({{'isech200.RF'}},'F390',0.2e-3,3,90,{{'n'}}); 
+pulso{7} = decompulse({{'isech200.RF','isech200.RF'}},'F1390',0.2e-3,[1 3],[90 90],{{'n','n'}}); 
+pulso{8} = decompulse({{'isech200.RF','isech200.RF'}},'F2390',0.2e-3,[2 3],[90 90],{{'n','n'}}); 
+
+ss =  compseq('geoph',pulso);
+roh = mol.Iz{1} + mol.Iz{2} + mol.Iz{3}  ;
+[roh2 spec]= simseq(ss,roh,[-200 200]);
+seq2spec('geoph',ss,pulso);
+
+ 

@@ -1,0 +1,26 @@
+# With The Following sum limits: s_a,s_p = 8,14 
+# 
+# Best Chi_2 for gate Roty(90)Xid , PW = 100 , NP=100, Opt14
+
+   Chi_2 = 0.0061923 
+
+# Best Chi_2 for gate Roty(90)Xid , PW = 150 , NP=100, Opt1
+
+   Chi_2 = 0.0084442 
+
+# Best Chi_2 for gate Roty(90)Xid , PW = 150 , NP=150, Opt17
+
+   Chi_2 = 0.0088837 
+
+# Best Chi_2 for gate Roty(90)Xid , PW = 200 , NP=100, Opt14
+
+   Chi_2 = 0.0067853 
+
+# Best Chi_2 for gate Roty(90)Xid , PW = 200 , NP=150, Opt18
+
+   Chi_2 = 0.0061602 
+
+# Best Chi_2 for gate Roty(90)Xid , PW = 200 , NP=200, Opt10
+
+   Chi_2 = 0.0067152 
+

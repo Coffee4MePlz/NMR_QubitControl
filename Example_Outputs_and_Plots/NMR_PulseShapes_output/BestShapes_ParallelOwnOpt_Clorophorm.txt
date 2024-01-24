@@ -1,0 +1,18 @@
+# With The Following sum limits: s_a,s_p = 6,12 
+# 
+# Best Chi_2 for gate 1Xsy , NP=50, Opt2
+
+   Chi_2 = 0.010106 
+
+# Best Chi_2 for gate 1Xsy , NP=100, Opt6
+
+   Chi_2 = 0.01031 
+
+# Best Chi_2 for gate 1Xsy , NP=150, Opt28
+
+   Chi_2 = 0.011719 
+
+# Best Chi_2 for gate 1Xsy , NP=200, Opt33
+
+   Chi_2 = 0.012503 
+

@@ -1,0 +1,33 @@
+function [r th power np dt]=composepul(shps,pw,ang,phase,targ,typs);
+   
+global mol;
+
+rr = 0; ii = 0;
+
+for k=1:length(shps)
+    shp = shps{k};
+    np = length(shp(:,3));  np2 = sum(shp(:,3));
+    dt = pw/np2;   t = ((1:np)*dt).*shp(:,3)';
+    
+    if typs{k} == 'n'
+    
+        ramp(k) = 2*pi*mol.dq(targ(k)); %ramp is zero where the pulse is focused
+        pp = pi*(shp(:,1) - shp(1,1))/180;
+        wr = pi*ang(k)*abs(shp(:,2)/sum(cos(pp).*shp(:,2)*dt*180)); % (?) whats the meaning of this ? and if cos(pp)=0?
+        
+    else
+        ramp(k) = 0;         
+        wr = shp(:,2);
+    
+    end
+    
+    ph = shp(:,1)*pi/180 + phase(k)*pi/180 + ramp(k)*t';
+    
+    rr = rr + wr.*cos(ph);
+    ii = ii + wr.*sin(ph);
+
+end
+
+[th r] = cart2pol(rr,ii);
+
+power = max(r)/(2*pi);

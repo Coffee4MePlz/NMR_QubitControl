@@ -1,0 +1,78 @@
+
+initspin([1 2 3]);
+
+appulse('F190g',0);
+
+% grad(2000,0.002,'trap');
+% 
+% 
+% appulse('F390',90);
+% 
+% apdelay(2,3,-70.5);
+%  
+% aprefocus('F1180',0,[1 3]);
+% aprz(70.5/2,3);
+% appulse('F390',270);
+% 
+% 
+% grad(2000,0.002,'trap');
+% 
+% appulse('F290',90);
+% 
+% apdelay(2,3,-90);
+%  
+% aprefocus('F1180',0,[1 2]);
+% aprz(45,2);
+% appulse('F290',270);
+% 
+% grad(2000,0.002,'trap');
+% 
+% appulse('F3a',90);
+%  
+% grad(2000,0.002,'trap');
+% %---------------------------------------------------------
+% %     appulse('F290',90);
+% % % % 
+% %    apdelay(2,3,-90);
+% %     aprefocus('F1180',0,[1 2]);
+% %   
+% % % %---------swap----------------------------------------
+% % 
+% 
+% 
+% 	
+% 	appulse('F190g',90); appulse('F390g',90);
+%     apdelay(1,3,180);
+%     aprefocus('F2180',[0],[1 2]);
+%     appulse('F190g',270); appulse('F390g',270);
+%     apdelay(1,3,180);
+%     aprefocus('F2180',[0],[1 2]);
+%     appulse('F190g',0); appulse('F390g',0);
+%     apdelay(1,3,180);
+%     aprefocus('F2180',[0],[1 2]);
+%     appulse('F190g',180); appulse('F390g',180);
+% 	
+% 	
+%   % % % %  %------------------------------------
+%  
+%   
+%   %-----------------------------------------------------------------------
+%   % opthere;
+% %     apdelay(2,3,90); 
+% %    aprefocus('F1180',0,[1 2]);
+%   
+%  
+% global nr;
+% if nr == 1;  end
+% if nr == 2; appulse('F190g',0); end
+% if nr == 3; appulse('F190g',90); end
+% if nr == 4; appulse('F390g',0);  end
+% if nr == 5; appulse('F390g',90);  end
+% if nr == 6; appulse('F190g',0); appulse('F390g',0);  end
+% if nr == 7; appulse('F190g',90); appulse('F390g',90);  end
+% if nr == 8; appulse('F190g',0); appulse('F390g',90);  end
+% if nr == 9; appulse('F190g',90); appulse('F390g',0);  end
+% 
+% appulse('F290g',90);
+% 
+% 

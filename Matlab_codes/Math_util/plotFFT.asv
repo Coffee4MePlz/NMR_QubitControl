@@ -1,0 +1,50 @@
+
+% Gaussian Function Example
+fs = 10000;       % Sampling 
+sigma = 1e-5;      % Standard deviation
+t = 0:1e-6:800*1e-6;    % Time vector (0 to fs micro second duration)
+%f_values = 1023*exp(-(-200*1e-6 +t).^2 / (2*sigma^2)) + 1023*exp(-(-600*1e-6 +t).^2 / (2*sigma^2));  % Gaussian function
+%f_values = sin(2*pi*2*1e4*t) + cos(2*pi*5*1e4*t);
+%f_values = square(2*pi*1e-2*t,50);
+f_values = heaviside(t-122*1e-6) - heaviside(t-144*1e-6);
+
+plotFFT1(t, f_values)
+
+
+function result = plotFFT1(t, f) 
+% Given function f() in time
+%f = sin(2*pi*2*t) + cos(2*pi*5*t);  % Example function
+
+%fs = length(f)-1;
+
+% Perform FFT
+N = length(f);     % Number of samples
+F = fft(f);        % Compute Fourier Transform
+F = abs(F/N);      % Normalize the result
+%split F
+F2 = F;
+F = cat(2, F2(floor(N/2)+1:N), F2(1:floor(N/2)));
+
+% Frequency axis
+fs = 1 / (t(2)-t(1));  % Sampling frequency
+freq = (0:N-1)*(fs/N);
+
+% Plotting
+figure(1);
+subplot(2,1,1);
+plot(t,f);
+ylim([0,max(f)*()])
+xlabel('Time (0.1ms)');
+ylabel('Amplitude');
+title('Given Function f() in Time');
+
+subplot(2,1,2);
+bar(freq,F);
+%stem(freq, F, "filled");
+ylim([0,max(F)+max(F)*0.1])
+xlim([0, fs]);
+xlabel('Frequency (0.1MHz)');
+ylabel('Magnitude');
+title('Frequency Domain');
+
+end

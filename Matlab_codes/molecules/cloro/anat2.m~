@@ -1,0 +1,33 @@
+
+spectropar;
+cloroformio;
+[tran1 tran2 ff1 opr] = transitions(mol,1);
+
+
+t = linspace(0,420,15);
+t = linspace(0,10,20);
+
+aa=varian2mat('t2',8*1024);
+
+
+aa = apodize(aa);
+
+for k=1:length(aa);
+	aa{k} =  fitespec(aa{k},ff1-5,0.98,[1 5],[-200 200]);
+    plotfit(1,aa{k},[-200 200]); pause(0.2);
+	mx = sum(aa{k}.ILP(1:2:3));
+	my = sum(aa{k}.ILP(2:2:4)); 
+	mm(k) = sqrt(mx^2 + my^2);
+end
+
+figure(10)
+plot(t,mm,'ok') ; 
+hold on
+fun{1} = @(c,x) exp(-x/c(1));
+
+[INLP ILP] = fminspleas(fun,[200],t,mm,0,400);
+
+xx = linspace(0,max(t),100);
+yy = ILP*fun{1}(INLP,xx);
+plot(xx,yy,'r')
+disp(INLP)

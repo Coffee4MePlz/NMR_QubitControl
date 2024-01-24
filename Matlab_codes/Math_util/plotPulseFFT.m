@@ -1,0 +1,157 @@
+
+%USAGE:
+% Gaussian Function Example
+%{
+sigma = 4*1e-5;      % Standard deviation
+t = 0:1e-6:0.8*(1e-3-1*1e-6);    % Time vector (0 to fs micro second duration)
+f_values2 = exp(-(-200*1e-6 +(t)).^2 / (2*sigma^2)) ;%+ exp(-(-600*1e-6 +t).^2 / (2.2*sigma^2));  % Gaussian function
+
+f_values2 = sinc((t - 300*1e-6)*1.2*1e4);
+f_values2 = f_values2 - min(f_values2);
+f_values2 = (heaviside(t - 2*1e-4) - heaviside(t - 5.5*1e-4)).*f_values2;
+%f_values2 = sinc((t - 400*1e-6)*1.2*1e4);
+%f_values2 = (heaviside(t - 1*1e-4) - heaviside(t - 4*1e-4));
+molfreq = mol.dq;
+
+plotPulseFFT(amplitude, phase, t,scale_up,fignumber,molfreq) 
+%plotPwelch(t,f_values2,2)
+%}
+
+
+function result = plotFFT(f, phase ,t, scale ,fignum,molfreq) %, numfig2) 
+    arguments
+        f (1,:) %= exp(-(-200*1e-6 +(t)).^2 / (2*sigma^2)) % function input (example: Gaussian)
+        phase (1,:) double = [] %optional Phase vector
+        t (1,:)  = 0:1e-6:1000*1e-6;    % Time vector (0 to 10^3 micro second duration)
+        scale (1,1) double = 1 % choose how much more points to interpolate, e.g. scale = 10
+        fignum double = 1 %figure number to plot
+        molfreq (1,:) = [] %frequencies in the molecule structure, stored as mol.dq
+        %numfig2 double = 1
+    end
+    % Given function of t f(t) in time, with dt in 1e-6, plot both f() and its FFT
+    
+    L = t(2)-t(1); %taking time-step size
+    fs = 1 / L;  % Sampling frequency
+    
+    % Perform FFT
+    N = length(f);     % Number of samples
+    %N = floor(N*10) ;%making more points
+    Fourier = fft(f, N+1);        % Compute Fourier Transform
+    Fourier = fftshift(Fourier);
+    F = abs(Fourier/N);      % Normalize the result
+    
+    
+    % Frequency axis
+    %freq = (0:N-1)*(fs/N) - floor(fs/2);% - fs/N/2;
+    freq = (-N/2:N/2)*(fs/N);
+    
+        % making more points
+    t_new = linspace(0,sum(t)*1e-2, scale*length(t));
+    freq_new = linspace(min(freq),max(freq), scale*length(freq));
+    f_new = interp1(t, f, t_new, 'spline');
+    F_new = interp1(freq, F, freq_new, 'spline');
+
+
+    subfig =0;
+    if ~isempty(phase)
+        subfig = 2;
+        %F2 = fft(phase, N+1);        % Compute Fourier Transform
+        %F2 = fftshift(F2);
+        %F2 = abs(F2/N);      % Normalize the result
+        F2 = angle(Fourier);
+        phase_new = interp1(t, phase, t_new, 'linear');
+        F2_new = interp1(freq, F2, freq_new, 'spline');
+    end
+
+    % Plotting
+    figure(fignum);
+    subplot(2+subfig,1,1);
+    plot(t_new,f_new);
+    hold on; plot(t,t*0, 'k'); hold off;
+    ticker = 0:L*length(t)/10:L*length(t);
+    xticks(ticker);
+    ylim([-0.5,max(f_new)*(1.1)])
+    ax=gca; ax.XAxis.Exponent = -6;
+    xlabel('Time (us)');
+    ylabel('Amplitude');
+    title('Given Function f() in Time');
+    
+    if ~isempty(phase)
+        subplot(2+subfig,1,1+subfig/2);
+        scatter(t_new,phase_new, '.');
+        hold on; plot(t,t*0, 'k'); hold off;
+        ticker = 0:L*length(t)/10:L*length(t);
+        xticks(ticker);
+        ylim([-0.5,max(phase)*(1.1)])
+        ax=gca; ax.XAxis.Exponent = -6;
+        xlabel('Time (us)');
+        ylabel('Phase');
+        title('Phase of f() in Time');
+    end
+    
+    subplot(2+subfig,1,2+subfig/2);
+    bar(freq_new,F_new);
+    if ~isempty(molfreq) 
+        hold on;
+        Resson = zeros(1,length(freq));
+        for j =1:length(molfreq)
+            indx = find(abs(freq - molfreq(j))<(fs/N)*0.5001);
+            Resson(indx) = max(F)*1.1;
+        end
+
+        bar(freq, Resson,0.05, 'r','EdgeColor', 'r', 'LineStyle', ':' ); hold off;
+    end
+    %}
+    freqmax = max(freq);
+    ax=gca; ax.XAxis.Exponent = 3;
+    ticker = -freqmax:freqmax/50:freqmax; %  -freqmax:freqmax/25:freqmax;
+    xticks(ticker);
+    ylim([0,max(F)*1.2])
+    xlim([-freqmax/5 freqmax/5]);
+    xlabel('Frequency (kHz)');
+    ylabel('Magnitude');
+    title('Frequency Domain');
+    
+    if ~isempty(phase)
+        subplot(2+subfig,1,2+subfig);
+        plot(freq_new,F2_new, '.');
+        %}
+        freqmax = max(freq_new);
+        ax=gca; ax.XAxis.Exponent = 3;
+        ticker = -freqmax:freqmax/5:freqmax; %  -freqmax:freqmax/25:freqmax;
+        xticks(ticker);
+        ylim([min(F2)-0.1,max(F2)*1.2+0.1])
+        xlim([-freqmax freqmax]);
+        xlabel('Frequency (kHz)');
+        ylabel('Phase spectrum');
+        title('Frequency Domain');
+    end
+
+
+end
+
+
+function plotPwelch (t,f,fignum)
+
+fs = 1 / (t(2)-t(1));
+% Compute the power spectral density using pwelch
+window = 500;                % Window size for segmenting the signal
+overlap = 250;               % Overlap size between adjacent segments
+nfft = 1024;                 % Number of FFT points
+[Pxx, freq] = pwelch(f, window, overlap, nfft, fs);
+
+% Plotting
+figure(fignum);
+subplot(2,1,1);
+plot(t, f);
+xlabel('Time (0.1ms)');
+ylabel('Amplitude');
+title('Test Signal');
+
+subplot(2,1,2);
+plot(freq, 10*log10(Pxx));
+xlim([0, fs/2]);
+xlabel('Frequency (0.1MHz)');
+ylabel('Power Spectral Density (dB/Hz)');
+title('Power Spectral Density Estimate');
+end

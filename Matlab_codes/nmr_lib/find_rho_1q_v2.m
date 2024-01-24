@@ -1,0 +1,122 @@
+function [rho_final,t_0] = find_rho_1q_v2(rho_exp, flag, target, figuras)
+% Se figuras for diferente de zero o programa mostrara as figuras das
+% matrizes antes e depois. 
+% target --> estado esperado para chute inicial funciona junto com flag = 3
+% flag - diferents cutes iniciais 
+% flag = 1 chute inicial aleatório
+% flag = 2 chute inicial ones normalizado
+% flag = 3 chute inicial é o traget físico esperado
+
+aaa = rho_exp;
+
+fator = 10^7;
+
+rho_med = (round(real(aaa) * fator) + 1i * round(imag(aaa) * fator)) / fator;
+
+%rho_med; % mostra rho depois da primeira correcao
+
+
+%------------------------------ finder ------------------------------------
+%------ chute inical para construir o conjunto ----------------------------
+%------ de parahmetros que entra no ajuste --------------------------------
+
+if flag == 1
+    t_0 = rand(1, 4);   % t's iniciais aleatorios
+end
+
+if flag == 2 
+    t_0 = ones(1, 4);   % t's iniciais iguais a 1
+end
+
+
+%------ mostra a matriz inicial que entra no ajuste -----------------------
+
+rho_t = func_rho_1q(rho_med, t_0,1);   
+
+%------ mostra o chi quadrado inicial -------------------------------------
+
+chi_2_ini = func_rho_1q(rho_med, t_0);  
+
+
+%------------- faz o ajuste - o resultado eh guardado em t_f --------------
+
+
+options = optimset('MaxFunEvals', 2e11,'MaxIter', 1e11,'TolX', 1e-10);
+
+
+t_f = fminsearch(@(t) func_rho_1q(rho_med, t), t_0, options);  % faz o ajuste
+
+
+%------------- motra a matriz final ---------------------------------------
+
+
+rho_f = func_rho_1q(rho_med, t_f, 1);  
+
+
+%------------- mostra o chi quadrado final --------------------------------
+
+
+chi_2_fin = func_rho_1q(rho_med, t_f);  % mostra o chi quadrado final
+
+
+%----------------------------- final da funcao ----------------------------
+
+
+rho_final = rho_f;
+
+
+%------------- figura 1 --- matriz experimental e de entrada no ajuste ----
+
+
+if figuras ~= 0
+
+
+figure(998);
+
+subplot(2,2,1);
+
+escala = max(diag(rho_exp)); escala = escala + escala * 0.1;
+
+bar3(real(rho_exp)); axis([0.5 4.5 0.5 4.5 -escala escala]); axis off;
+
+subplot(2,2,2);
+
+bar3(imag(rho_exp)); axis([0.5 4.5 0.5 4.5 -escala escala]); axis off;
+
+subplot(2,2,3);
+
+bar3(real(rho_med)); axis([0.5 4.5 0.5 4.5 -0.1 1.1]); axis off;
+
+subplot(2,2,4);
+
+bar3(imag(rho_med)); axis([0.5 4.5 0.5 4.5 -0.1 1.1]); axis off;
+
+
+
+%------------- figura 2 --- matriz inicial (chute) e final do ajuste ------
+
+
+figure(999);
+
+subplot(2,2,1);
+
+bar3(real(rho_t)); axis([0.5 4.5 0.5 4.5 -0.1 1.1]); axis off;
+
+subplot(2,2,2);
+
+bar3(imag(rho_t)); axis([0.5 4.5 0.5 4.5 -0.1 1.1]); axis off;
+
+subplot(2,2,3);
+
+bar3(real(rho_f)); axis([0.5 4.5 0.5 4.5 -0.1 1.1]); axis off;
+
+subplot(2,2,4);
+
+bar3(imag(rho_f)); axis([0.5 4.5 0.5 4.5 -0.1 1.1]); axis off;
+
+
+%--------------------------------------------------------------------------
+
+end
+
+
