@@ -3,6 +3,12 @@
 ## Overview
 This repository contains MATLAB scripts for controlling qubits using Nuclear Magnetic Resonance (NMR) techniques, focusing on modulated radiofrequency pulses (mostly for Fourier Series modulation and optimization of Fourier coefficients), Quantum Process Tomography, and noise analysis in quantum systems. The code is based on extensive research conducted in the field of Quantum Information Processing using NMR, as detailed in the accompanying Master's thesis. The codes in this repository where developed at UFABC (Federal University of The São Paulo ABC) at the [Quantum information Lab](https://www.quantumufabc.org/) and financed by CAPEs .
 
+### Example of Modulated Pulse by Fourier series
+
+![Modulated pulse](https://github.com/Coffee4MePlz/NMR_QubitControl/blob/main/Example_Outputs_and_Plots/Plots/Example_Pulses/Clorophorm-190us_Shape_(sxXsx)_NP-180_SA8SP14_Dec_(PYplot).png)
+
+In the image above the Phase (blue plot) and the Amplitude (orange plot) of the Radiofrequency pulse are modulated by Fourier series. One can see that the resulting function can be very arbitrary in shape. 
+
 ### Files of interest in the Repository
 
 1. `TUTORIAL_ModulatedPulses.m`
