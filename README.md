@@ -1,14 +1,15 @@
-# Matlab codes for NMR Quantum Computing
 # NMR Qubit Control MATLAB Code
 
 ## Overview
 This repository contains MATLAB scripts for controlling qubits using Nuclear Magnetic Resonance (NMR) techniques, focusing on modulated pulses, process tomography, and noise analysis in quantum systems. The code is based on extensive research conducted in the field of quantum information processing using NMR, as detailed in the accompanying master's thesis.
 
-### Files in the Repository
+### Files of interest in the Repository
 
 1. `TUTORIAL_ModulatedPulses.m`
 2. `modulados_HomQbits_Par_withNoise.m`
 3. `genChoi_map_exp.m`
+4. 'MasterThesis_TheoryForModulatedPulses_GustavoCafe.pdf'
+\hline
 
 ## `TUTORIAL_ModulatedPulses.m`
 This tutorial script introduces modulated pulses in qubit control. It demonstrates the implementation and analysis of these techniques in MATLAB, providing a foundation for understanding pulse modulation in quantum systems.
