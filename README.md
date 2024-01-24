@@ -20,6 +20,7 @@ In the image above the Phase (blue plot) and the Amplitude (orange plot) of the 
 4. `MasterThesis_TheoryForModulatedPulses_GustavoCafe.pdf`
 
 ---
+# Details on each one of the files of interest
 ---
 ## `TUTORIAL_ModulatedPulses.m`
 This tutorial script introduces modulated pulses in qubit control and serves as a tutorial for the `modulados_HomQbits_Par_withNoise.m` file. 
